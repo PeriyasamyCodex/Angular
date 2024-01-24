@@ -1,0 +1,25 @@
+<div class="container-fluid pl-0 pr-0">
+   
+    <div class="row  card-header bg-dark text-white font-weight-bold">
+           
+        <div class="col-sm-3  col-md-2 pt-2 text-center text-md-left header-title"> 
+                Welcome to {{ title }}! 
+        </div>
+
+        <ul class="ml-5 pl-3 ml-md-0 nav nav-pills mr-5 bg-warning"> 
+                <li class="nav-item active">
+             <a href="" class="nav-link text-dark">Dashboard </a></li>
+             <li class="nav-item">
+             <a href="favourite" class="nav-link text-dark">Favourite Matches </a></li>
+        </ul>
+        <ng-container *ngIf="loggedInUser">
+
+                <div class="col-2 offset-sm-0 offset-md-4 text-right pt-2 header-username" >{{loggedInUser.userName}}</div> <div class="col-1 logout-btn" ><a class="btn btn-warning text-dark" (click)="logout()">Logout</a></div>
+        </ng-container>
+        
+    </div>
+    <router-outlet></router-outlet>
+    <div class="row pt-5"><div class="col"><div class="card-footer bg-dark  pt-4 pb-4"></div></div></div>
+  </div>
+
+

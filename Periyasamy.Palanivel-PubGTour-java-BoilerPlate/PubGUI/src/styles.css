@@ -1,0 +1,48 @@
+/* You can add global styles to this file, and also import other style files */
+@media (max-width: 576px) {
+    
+    .header-username{
+        margin-left: 104px !important;
+    margin-top: 10px;
+    }
+
+    .logout-btn{
+        margin-top: 10px; 
+    }
+}
+
+@media (min-width: 768px) and (max-width:991px){
+
+.header-title{
+    min-width: 188px !important;
+
+    
+}
+
+.login-box{
+
+    margin-left: 172px !important;
+    min-width: 459px !important;
+}
+
+.match-det-input{
+flex: none !important;
+max-width: 348px !important;
+}
+
+
+.pubg-match-titlebox{
+
+    margin-left: 0px !important;
+
+}
+.header-username{
+    margin-left: 0px !important;
+}
+    
+
+body{
+    overflow-x: hidden;
+
+}
+}

@@ -1,0 +1,33 @@
+CREATE TABLE `FAV_MATCH_TB` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `FAVMATCHID` varchar(100) NOT NULL,
+  `USERNAME` varchar(45) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 ;
+
+CREATE TABLE `USER_TB` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `USER_NAME` varchar(45) DEFAULT NULL,
+  `PASSWORD` blob,
+  `EMAIL` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=23 ;
+
+INSERT INTO `pubguidb`.`FAV_MATCH_TB`
+(`id`,
+`FAVMATCHID`,
+`USERNAME`)
+VALUES
+(1,
+'dummymatch1',
+'test');
+
+INSERT INTO `pubguidb`.`FAV_MATCH_TB`
+(`id`,
+`FAVMATCHID`,
+`USERNAME`)
+VALUES
+(2,
+'dummymatch2',
+'test');
+

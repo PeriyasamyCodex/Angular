@@ -1,0 +1,176 @@
+<div class="container-fluid bg-secondary">
+  <div class="row pt-5 ml-2">
+    <h2>Dashboard</h2>
+  </div>
+  <div class="row">
+    <div class="col">
+      <div class="card bg-dark text-white">
+        <div class="card-header">
+          <h3>Tournaments</h3>
+        </div>
+        <div class="card-body">
+          <h5 class="card-title">List of Tournaments</h5>
+
+          <ng-container *ngFor="let tournament of pubgTournResp.tournaments; index as i">
+            <div id="accordianTournaments{{i}}">
+              <div class=" pubg-match-titlebox card bg-secondary">
+                <div class="card-header" id="tournament{{i}}">
+                  <h5 class="mb-0">
+                    <button #refEl id="tournBtn{{i}}" class="btn btn-link text-warning font-weight-bold" data-toggle="collapse" (click)="onSelect(i,tournament);getTournamentMatchList(tournament)"
+                      attr.data-target="#collapseT{{i}}" aria-expanded="true" attr.aria-controls="collapseT{{i}}">
+                      {{tournament.tournId}}
+                    </button>
+
+                  </h5>
+                </div>
+                <div id="collapseT{{i}}" class="collapse hide" aria-labelledby="tournament" attr.data-parent="#accordianTournaments{{i}}">
+
+
+                  <ng-container *ngIf="selectedTournament==i">
+                    <h5 class="card-title ml-2 text-dark font-weight-bold">List of Matches</h5>
+                    <ng-container *ngFor="let tournamentMatch of tournMatchList; index as j">
+
+                      <div id="accordianTournMatches{{i+ ''+ j}}">
+                        <div class="pubg-match-titlebox card bg-dark  mb-1">
+                          <div class="card-header p-0" id="tournMatch{{i+ ''+ j}}">
+                            <h5 class="mb-0">
+                              <div class=" row ml-0 mr-0">
+                                <div class="col-md-4 text-left">
+                              <button  id="tournMatchBtn{{i+ ''+ j}}"  class="btn btn-link text-warning" data-toggle="collapse" (click)="onSelectTournament(i+ ''+ j);" attr.data-target="#collapseTM{{i+ ''+ j}}"
+                                aria-expanded="true" attr.aria-controls="collapseTM{{i+ ''+ j}}">
+                                {{tournamentMatch.id}}
+                              </button></div>
+                              <div class="col-md-3 offset-md-5 text-right">
+                                <ng-container *ngIf="userFavMatchesList.indexOf(tournamentMatch.id) >=0; else defaultAddFavbuttonBlock">
+                             <fa name="heart" class="text-warning" animation="spin"></fa>
+                                 </ng-container>
+
+                                 <ng-template #defaultAddFavbuttonBlock>
+
+                                    <button id="addFavBtn{{i+ ''+ j}}" class="btn btn-warning btn-sm text-dark mt-1 " (click)="addToFavourites(tournamentMatch.id)" >
+                                        Add To Favorites
+                                      </button>
+                                 </ng-template>
+                            </div>
+                            </div>
+                            </h5>
+                          </div>
+                          <div id="collapseTM{{i+ ''+ j}}" class="collapse hide" aria-labelledby="tournMatch" attr.data-parent="#accordianTournMatches{{i+ ''+ j}}">
+
+                              <div class="row ml-1 mt-3">
+
+                                      <div class="col-md-4 match-det-input">
+                                      <div class="form-group row">
+                                        <label for="createdAt{{i+ ''+ j}}" class="col-sm-4 col-form-label">Created At</label>
+                                        <div class="col-sm-8">
+                                          <input type="text" readonly class="form-contol-plaintext  border rounded border-primary" id="createdAt{{i+ ''+ j}}" value="{{tournamentMatch.createdAt}}">
+                                        </div>
+                                      </div>
+                                      </div>
+                                      <div class="col-md-4 match-det-input">
+                                          <div class="form-group row">
+                                              <label for="duration{{i+ ''+ j}}" class="col-sm-4 col-form-label">Duration</label>
+                                              <div class="col-sm-8">
+                                                <input type="text" readonly class="form-contol-plaintext  border rounded border-primary" id="duration{{i+ ''+ j}}" value="{{tournamentMatch.duration}}">
+                                              </div>
+                                            </div>
+                                      </div>
+                                      <div class="col-md-4 match-det-input">
+                                          <div class="form-group row">
+                                              <label for="shardId{{i+ ''+ j}}" class="col-sm-4 col-form-label">ShardId</label>
+                                              <div class="col-sm-8">
+                                                <input type="text" readonly class="form-contol-plaintext  border rounded border-primary" id="shardId{{i+ ''+ j}}" value="{{tournamentMatch.shardId}}">
+                                              </div>
+                                            </div>
+                                      </div>
+                                    </div>
+
+                                    <div class="row ml-1 mt-3">
+
+                                        <div class="col-md-4 match-det-input">
+                                        <div class="form-group row">
+                                          <label for="isCustomMatch{{i+ ''+ j}}" class="col-sm-4 col-form-label">Is Custom Match</label>
+                                          <div class="col-sm-8">
+                                            <input type="text" readonly class="form-contol-plaintext  border rounded border-primary" id="isCustomMatch{{i+ ''+ j}}" value="{{tournamentMatch.isCustomMatch}}">
+                                          </div>
+                                        </div>
+                                        </div>
+                                        <div class="col-md-4 match-det-input">
+                                            <div class="form-group row">
+                                                <label for="seasonState{{i+ ''+ j}}" class="col-sm-4 col-form-label">Season State</label>
+                                                <div class="col-sm-8">
+                                                  <input type="text" readonly class="form-contol-plaintext  border rounded border-primary" id="seasonState{{i+ ''+ j}}" value="{{tournamentMatch.seasonState}}">
+                                                </div>
+                                              </div>
+                                        </div>
+                                        <div class="col-md-4 match-det-input">
+                                            <div class="form-group row">
+                                                <label for="gameMode{{i+ ''+ j}}" class="col-sm-4 col-form-label">Game Mode</label>
+                                                <div class="col-sm-8">
+                                                  <input type="text" readonly class="form-contol-plaintext  border rounded border-primary" id="gameMode{{i+ ''+ j}}" value="{{tournamentMatch.gameMode}}">
+                                                </div>
+                                              </div>
+                                        </div>
+                                      </div>
+
+                                      <div class="row ml-1 mt-3">
+
+                                          <div class="col-md-4 match-det-input">
+                                          <div class="form-group row">
+                                            <label for="titleId{{i+ ''+ j}}" class="col-sm-4 col-form-label">Title Id</label>
+                                            <div class="col-sm-8">
+                                              <input type="text" readonly class="form-contol-plaintext  border rounded border-primary" id="titleId{{i+ ''+ j}}" value="{{tournamentMatch.titleId}}">
+                                            </div>
+                                          </div>
+                                          </div>
+                                          <div class="col-md-4 match-det-input">
+                                              <div class="form-group row">
+                                                  <label for="mapName{{i+ ''+ j}}" class="col-sm-4 col-form-label">Map Name</label>
+                                                  <div class="col-sm-8">
+                                                    <input type="text" readonly class="form-contol-plaintext  border rounded border-primary" id="mapName{{i+ ''+ j}}" value="{{tournamentMatch.mapName}}">
+                                                  </div>
+                                                </div>
+                                          </div>
+                                          <div class="col-md-4 match-det-input">
+                                              <div class="form-group row">
+                                                  <label for="matchId{{i+ ''+ j}}" class="col-sm-4 col-form-label">Match Id</label>
+                                                  <div class="col-sm-8">
+                                                    <input type="text" readonly class="form-contol-plaintext  border rounded border-primary" id="matchId{{i+ ''+ j}}" value="{{tournamentMatch.id}}">
+                                                  </div>
+                                                </div>
+                                          </div>
+                                        </div>
+                                
+                              
+                            
+
+                          </div>
+                        </div>
+
+
+                      </div>
+
+
+
+                    </ng-container>
+
+                  </ng-container>
+
+
+                </div>
+              </div>
+
+
+            </div>
+          </ng-container>
+        </div>
+
+
+      </div>
+
+
+    </div>
+
+
+  </div>
+</div>

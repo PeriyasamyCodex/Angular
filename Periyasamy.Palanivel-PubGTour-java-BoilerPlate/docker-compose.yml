@@ -1,0 +1,96 @@
+version: '3'
+
+
+services:
+
+  mysqldb:
+    image: mysql:5.7
+    ports:
+      - "3307:3306"
+    environment:
+      MYSQL_DATABASE: pubguidb
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DB_HOST: mysqldb
+    volumes:
+      - ./sql:/docker-entrypoint-initdb.d
+
+  eureka-registry-server:
+    build: ./eureka-registry-server
+    container_name: eureka-registry-server
+    ports:
+      - "8661:8661"
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-registry-server:8661/eureka
+    depends_on:
+     - mysqldb 
+
+  userservice:
+    build: ./userservice
+    container_name: userservice
+    hostname: localhost
+    ports:
+      - "8082:8082"
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-registry-server:8661/eureka
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysqldb:3306/pubguidb?allowPublicKeyRetrieval=true&useSSL=false
+      - EUREKA_INSTANCE_HOSTNAME=userservice
+  
+    links:
+      - eureka-registry-server 
+    depends_on:
+     - mysqldb
+      
+    
+  favouriteservice:
+    build: ./favouriteservice
+    container_name: favouriteservice
+    ports:
+       - "8081:8081"   
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-registry-server:8661/eureka
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysqldb:3306/pubguidb?allowPublicKeyRetrieval=true&useSSL=false  
+      - EUREKA_INSTANCE_HOSTNAME=favouriteservice
+    links:
+      - userservice
+    depends_on:
+     - mysqldb
+
+  angular_karma:
+    image: trion/ng-cli-karma:latest
+    container_name: 'angular_karma'
+    volumes:
+      - ./PubGUI:/usr/app/
+    working_dir: /usr/app
+    ports:
+      - 9876:9876
+    command: >
+      bash -c "npm install; ng test"
+      
+      
+  angular_e2e:
+    image: trion/ng-cli-e2e:latest
+    container_name: "angular_e2e"
+    network_mode: "host"
+    volumes:  
+      - ./PubGUI:/usr/app/  
+    working_dir: /usr/app/   
+    command: >
+     bash -c "./wait-for-it.sh userservice:8082 -t 120; ng e2e --port 4211"
+    depends_on:
+      - userservice
+      
+
+    
+  pubg-ui:
+    build: ./PubGUI
+    container_name: PubGUI
+    ports:
+      - "4200:80"    
+    links:
+      - userservice
+    
+
+  
+  
+  
+  
